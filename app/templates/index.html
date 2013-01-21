@@ -9,14 +9,14 @@
 <link rel="stylesheet" type="text/css" href="/cours-web-static/css/infos.css"/>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/cours-web-static/js/Scene.js"></script>
-<script type="text/javascript" src="/cours-web-static/js/Character.js"></script>
-<script type="text/javascript" src="/cours-web-static/js/Sprite.js"></script>
+<script type="text/javascript" src="/cours-web-static/js/Page.js"></script>
+<script type="text/javascript" src="/cours-web-static/js/InfoPage.js"></script>
+<script type="text/javascript" src="/cours-web-static/js/Window.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/utils.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/main.js"></script>
 <title>Cours Web</title>
 </head>
-<body>
+<body onload="start()">
 <div id="screen">
 	<div class="scene-view">
 		<div class="scene">
@@ -24,31 +24,7 @@
 			<div id="ennemy" class="character kankrelat"></div>
 		</div>
 	</div>
-	<div id="gui">
-		<div class="window">
-			<div class="menu">
-				<ul>
-					<li class="selected">Infos</li>
-					<li>Equipement</li>
-					<li>Statistiques</li>
-				</ul>
-			</div>
-			<div class="content">
-				<div class="player-name">Ulrich</div>
-				<div class="player-title">Samouraï</div>
-				<div class="player-progress"><div class="player-progress-indic"></div></div>
-				<dl>
-					<dt>XP</dt>
-					<dd class="xp">456</dd>
-					<dt>HP</dt>
-					<dd class="hp">120</dd>
-					<dt>Puissance</dt>
-					<dd class="power">12</dd>
-				</dl>
-				<div class="player-preview"></div>
-			</div>
-		</div>
-	</div>
+	<div id="gui"></div>
 </div>
 </body>
 </html>
