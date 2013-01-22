@@ -18,6 +18,8 @@ html, body{
 	background: black;
 }
 #screen{
+	-moz-user-select: none;
+	-webkit-user-select: none;
 	position: absolute;
 	width: 1024px;
 	height: 600px;

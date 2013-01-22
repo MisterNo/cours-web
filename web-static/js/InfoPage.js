@@ -1,59 +1,56 @@
+
 var InfoPage = function(){
 	Page.call(this, "");
 	
-	this.playerPreview = document.createElement("div");
-	this.playerPreview.className = "player-preview";
+	this.playerPreview = $("<div/>").addClass("player-preview");
 	this.append(this.playerPreview);
 
-	this.playerName = document.createElement("div");
-	this.playerName.className = "player-name";
+	this.playerName = $("<div>").addClass("player-name").append("nom");
 	this.append(this.playerName);
 	
-	this.playerTitle = document.createElement("div");
-	this.playerTitle.className = "player-title";
+	this.playerTitle = $("<div>").addClass("player-title").append("title");
 	this.append(this.playerTitle);
-	
-	this.playerProgress = document.createElement("div");
-	this.playerProgress.className = "player-progress";
-	this.playerProgress.innerHTML = '<div class="player-progress-indic"></div>';
+
+	this.playerProgress = $('<div class="player-progress"/>');
+	this.playerProgressIndic = $('<div class="player-progress-indic"/>');
+	this.playerProgress.append(this.playerProgressIndic);
 	this.append(this.playerProgress);
 	
-	this.attributeContainer = document.createElement("dl");
+	this.attributeContainer = $("<dl>");
 	this.append(this.attributeContainer);
-	
+
 	this.attributeList = {};
 	this.addAttribute("xp", "XP");
 	this.addAttribute("hp", "HP");
 	this.addAttribute("power", "Puissance");
 };
 InfoPage.prototype = new Page();
+
 InfoPage.prototype.refreshData = function(playerData){
 	for(var i in playerData){
 		switch(i){
 		case "name":
-			this.playerName.innerText = playerData.name;
+			this.playerName.html(playerData.name);
 			break;
 		case "title":
-			this.playerTitle.innerText = playerData.title;
+			this.playerTitle.html(playerData.title);
 			break;
 		case "progress":
-			this.playerProgressIndic.firstChild.style.width = Math.round(playerData.progress * 100) + '%';
+			this.playerProgressIndic.css("width", Math.round(playerData.progress * 100) + '%');
 			break;
 		default:
-			if(typeof this.attributeList[i] != "undefined"){
-				this.attributeList[i].innerText = playerData[i];
+			if(typeof(this.attributeList[i]) != "undefined"){
+				this.attributeList[i].html(playerData[i]);
 			}
 		}
 	}
 };
 InfoPage.prototype.addAttribute = function(id, label){
-	var dt = document.createElement("dt");
-	dt.innerHTML = label;
-	this.attributeContainer.appendChild(dt);
+	var dt = $("<dt>").append(label);
+	this.attributeContainer.append(dt);
 	
-	var dd = document.createElement("dd");
-	dd.className = id;
-	this.attributeContainer.appendChild(dd);
+	var dd = $("<dd>").addClass(id);
+	this.attributeContainer.append(dd);
 	
 	this.attributeList[id] = dd;
 };

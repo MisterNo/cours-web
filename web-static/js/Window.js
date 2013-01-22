@@ -18,9 +18,12 @@ var Window = function(id, parent){
 	this.content.className = "content";
 	this.root.appendChild(this.content);
 	
-	this.currentPage = false;
+	this.currentPage = null;
 };
 Window.prototype.addPage = function(title, page){
+	if(!(page instanceof Page)){
+		throw page + " is not instanceof Page";
+	}
 	var _this = this;
 	this.content.appendChild(page.root);
 	
@@ -29,21 +32,23 @@ Window.prototype.addPage = function(title, page){
 	var menuElm = document.createElement("li");
 	menuElm.innerHTML = title;
 	menuElm.page = page;
+	
 	menuElm.addEventListener("click", function(){
 		_this.showPage(menuElm);
 	});
 	this.menuList.appendChild(menuElm);
 	
-	if(this.menuList.childNodes.length == 1){
+	if(this.currentPage == null){
 		this.showPage(menuElm);
 	}
 };
+
 Window.prototype.showPage = function(elm){
-	if(this.currentPage){
+	if(this.currentPage != null){
+		this.currentPage.page.setVisible(false);
 		this.currentPage.className = "";
-		this.currentPage.page.root.style.display = "none";
 	}
 	this.currentPage = elm;
+	this.currentPage.page.setVisible(true);
 	this.currentPage.className = "selected";
-	this.currentPage.page.root.style.display = "block";
 };
