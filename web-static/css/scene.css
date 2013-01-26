@@ -7,6 +7,7 @@
 	overflow: hidden;
 }
 .scene{
+	position: absolute;
 	width: 4096px;
 	height: 2037px;
 	background-image: url(../img/forest.jpg);

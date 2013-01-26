@@ -1,5 +1,4 @@
-var count = 0;
-var Sprite = function(parent, id, url, width, height, rowCount, colCount, loop){
+var Sprite = function(parent, id, url, width, height, colCount, rowCount, loop){
 	this.id = id;
 	this.loop = loop;
 	this.parent = parent;
@@ -19,8 +18,7 @@ var Sprite = function(parent, id, url, width, height, rowCount, colCount, loop){
 	this.x = 0;
 	this.y = 0;
 	
-//	this.character.scene.game.assetManager.loadImage(url);
-	this.elm = $(document.createElement("div"));
+	this.elm = $("<div>");
 	this.elm.css("position", "absolute");
 	this.elm.css("top", "0px");
 	this.elm.css("overflow", "hidden");
@@ -30,11 +28,12 @@ var Sprite = function(parent, id, url, width, height, rowCount, colCount, loop){
 	this.onAnimationComplete = false;
 	
 	this.img = $(document.createElement("img"));
-	this.img.css("width", this.imgWidth + 'px');
-	this.img.css("height", this.imgHeight + 'px');
 	this.img.css("position", "absolute");
 	this.img.css("left", "0");
 	this.img.css("top", "0");
+
+	this.img.css("width", this.imgWidth + 'px');
+	this.img.css("height", this.imgHeight + 'px');
 	this.width = Math.round(this.imgWidth / this.colCount);
 	this.height = Math.round(this.imgHeight / this.rowCount);
 	this.elm.width(this.width);
@@ -45,15 +44,11 @@ var Sprite = function(parent, id, url, width, height, rowCount, colCount, loop){
 		this.setUrl(url);
 	}
 };
-Sprite.prototype.setUrl = function(url, onload){
+
+Sprite.prototype.setUrl = function(url){
 	if(this.url != url){
 		this.url = url;
-		if(onload){
-			this.img.get(0).onload = onload;
-		}
 		this.img.attr("src", this.url);
-	}else if(onload){
-		onload();
 	}
 };
 Sprite.prototype.setPosition = function(x, y){
@@ -61,6 +56,7 @@ Sprite.prototype.setPosition = function(x, y){
 	this.y = y;
 	this.refreshPosition();
 };
+
 Sprite.prototype.setCenter = function(x, y){
 	this.centerX = x;
 	this.centerY = y;

@@ -20,14 +20,15 @@ html, body{
 #screen{
 	-moz-user-select: none;
 	-webkit-user-select: none;
-	position: absolute;
-	width: 1024px;
-	height: 600px;
-	background: white;
-	top: 50%;
-	left: 50%;
-	margin-left: -512px;
-	margin-top: -300px;
+	position: relative;
+ 	width: 1024px;
+ 	height: 600px;
+ 	overflow: hidden;
+/* 	background: white; */
+/* 	top: 50%; */
+/* 	left: 50%; */
+/* 	margin-left: -512px; */
+/* 	margin-top: -300px; */
 	font-family: gunship-condensed;
 	font-size: 9px;
 }
