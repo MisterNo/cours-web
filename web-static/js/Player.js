@@ -2,6 +2,9 @@ var Player = function(parent){
 	var _this = this;
 	Character.call(this, parent);
 
+	this.centerX = 64;
+	this.centerY = 120;
+	
 	$(document).keyup(function(e){
 		_this.onKeyUp(e.which);
 	});
@@ -23,16 +26,19 @@ var Player = function(parent){
 		"move-left": new Sprite(this.elm, "move-left", "/cours-web-static/img/sprite/revert-move-1-2-1.png", 896, 128, 7, 1, true),
 		"move-right": new Sprite(this.elm, "move-right", "/cours-web-static/img/sprite/move-1-2-1.png", 896, 128, 7, 1, true)
 	};
+	for(var i in this.spriteList){
+		this.spriteList[i].setCenter(this.centerX, this.centerY);
+	}
 
 	this.spriteList["move-left"].frameCount = 6;
 	this.spriteList["move-right"].frameCount = 6;
 	this.revertDirection = false;
 	this.setSprite("idle");
 };
-Player.MIN_Y = 1455;
+Player.MIN_Y = 1500;
 Player.MAX_Y = 1920;
 Player.MIN_SCALE = 0.5;
-Player.MAX_SCALE = 1.3;
+Player.MAX_SCALE = 1.1;
 
 Player.prototype = new Character();
 Player.prototype.update = function(deltaTime){
@@ -68,10 +74,13 @@ Player.prototype.setPosition = function(x, y){
 	
 	if(this.y != lastY){
 		var factor = (y - Player.MIN_Y) / (Player.MAX_Y - Player.MIN_Y);
-		this.scale = factor * (Player.MAX_SCALE - Player.MIN_SCALE) + Player.MIN_SCALE;
-		for(var i in this.spriteList){
-			this.spriteList[i].setScale(this.scale);
-		}
+		this.setScale(factor * (Player.MAX_SCALE - Player.MIN_SCALE) + Player.MIN_SCALE);
+	}
+};
+Player.prototype.setScale = function(scale){
+	this.scale = scale;
+	for(var i in this.spriteList){
+		this.spriteList[i].setScale(this.scale);
 	}
 };
 Player.prototype.setSprite = function(anim, onComplete){
@@ -100,7 +109,13 @@ Player.prototype.onKeyDown = function(k){
 		this.nextAnim = this.lastAnimId;
 		this.setSprite("attack", function(){
 			_this.setSprite(_this.nextAnim);
-			camera.shake(3);
+			for(var i = 0; i < game.mobList.length; i++){
+				var mob = game.mobList[i];
+				if(Math.abs(mob.x - _this.x) < 80 && Math.abs(mob.y - _this.y) < 20){
+					game.killMob(mob);
+				}
+			}
+//			camera.shake(3);
 		});
 	}
 };

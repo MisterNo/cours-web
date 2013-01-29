@@ -20,7 +20,7 @@ Character.prototype.setPosition = function(x, y){
 
 	this.elm.css("left", Math.round(x) + "px");
 	this.elm.css("top", Math.round(y) + "px");
-	
+	this.elm.css("z-index", Math.round(20 * (y - Player.MIN_Y) / (Player.MAX_Y - Player.MIN_Y)));
 	for(var i = 0; i  < this.positionListenerList.length; i++){
 		this.positionListenerList[i](this.x, this.y);
 	}
