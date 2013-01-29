@@ -1,5 +1,7 @@
 var infoPage;
 
+var localTime = 0;
+var globalTime = 0;
 function start(){
 	console.log("ok");
 
@@ -34,5 +36,16 @@ function start(){
 	camera = new Camera(scene, player);
 
 	player.setPosition(3530, 1770);
-	player.init();
+	
+	requestAnimFrame(
+		function loop() {
+			var now = Date.now();
+			var globalTimeDelta = now - globalTime;
+			var localTimeDelta = Math.min(50, globalTimeDelta);
+			localTime += localTimeDelta;
+
+			player.update(localTimeDelta / 1000);
+			requestAnimFrame(loop);
+		}					
+	);
 }

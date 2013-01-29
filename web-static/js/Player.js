@@ -1,19 +1,19 @@
 var Player = function(parent){
 	var _this = this;
 	Character.call(this, parent);
-	
-	$(document).keypress(function(e){
-		_this.onKeyPress(e.which);
-	});
 
 	$(document).keyup(function(e){
 		_this.onKeyUp(e.which);
 	});
 	
-	this.speed = {
-		x: 30,
-		y: 10
-	};
+	$(document).keydown(function(e){
+		_this.onKeyDown(e.which);
+	});
+	
+	this.keyList = {};
+	
+	this.speed = {x: 200, y: 80};
+	this.xFactor = this.speed.x / this.speed.y;
 
 	this.spriteList = {
 		"idle-left": new Sprite(this.elm, "idle-left", "/cours-web-static/img/sprite/revert-idle-1-2-1.png", 2048, 256, 16, 2, true),
@@ -35,7 +35,32 @@ Player.MIN_SCALE = 0.5;
 Player.MAX_SCALE = 1.3;
 
 Player.prototype = new Character();
-Player.prototype.init = function(){
+Player.prototype.update = function(deltaTime){
+	var move = {x: 0, y: 0};
+	// Q
+	if(this.keyList[113] || this.keyList[81]){
+		this.revertDirection = true;
+		move.x = -1;
+	}
+	// S
+	if(this.keyList[115] || this.keyList[83]){
+		move.y = 1;
+	}
+	// D
+	if(this.keyList[100] || this.keyList[68]){
+		this.revertDirection = false;
+		move.x = 1;
+	}
+	// Z
+	if(this.keyList[122] || this.keyList[90]){
+		move.y = -1;
+	}
+	if(move.x != 0 || move.y != 0){
+		this.move(move.x * this.speed.x * deltaTime, move.y * this.speed.y * deltaTime);
+		this.setSprite("move");
+	}else{
+		this.setSprite("idle");
+	}
 };
 Player.prototype.setPosition = function(x, y){
 	var lastY = this.y;
@@ -52,71 +77,33 @@ Player.prototype.setPosition = function(x, y){
 Player.prototype.setSprite = function(anim, onComplete){
 	this.lastAnimId = anim;
 	var spriteId = anim + "-" + (this.revertDirection?"left":"right");
-	console.log("new anim " + spriteId);
 	if(this.currentSprite != this.spriteList[spriteId]){
-		if(this.currentSprite){
-			this.currentSprite.stop();
-			this.currentSprite.hide();
+		if(!this.currentSprite || this.currentSprite.loop || this.currentSprite.currentFrame == this.currentSprite.frameCount - 1){
+			if(this.currentSprite){
+				this.currentSprite.stop();
+				this.currentSprite.hide();
+			}
+			this.currentSprite = this.spriteList[spriteId];
+			this.currentSprite.resetAnim();
+			this.currentSprite.play(onComplete);
+			this.currentSprite.show();
+		}else{
+			this.nextSprite = anim;
 		}
-		this.currentSprite = this.spriteList[spriteId];
-		this.currentSprite.resetAnim();
-		this.currentSprite.play(onComplete);
-		this.currentSprite.show();
 	}
 };
-Player.prototype.onKeyPress = function(k){
+Player.prototype.onKeyDown = function(k){
 	var _this = this;
-	var move = true;
-	switch(k){
-	// Q
-	case 113:
-	case 81:
-		this.revertDirection = true;
-		this.move(-this.speed.x, 0);
-		break;
-	// S
-	case 115:
-	case 83:
-		this.move(0, this.speed.y);
-		break;
-	// D
-	case 100:
-	case 68:
-		this.revertDirection = false;
-		this.move(this.speed.x, 0);
-		break;
-	// Z
-	case 122:
-	case 90:
-		this.move(0, -this.speed.y);
-		break;
+	this.keyList[k] = true;
 	// SPACE
-	case 32:
-		move = false;
-		var lastAnim = this.lastAnimId;
+	if(k == 32){
+		this.nextAnim = this.lastAnimId;
 		this.setSprite("attack", function(){
-			_this.setSprite(lastAnim);
+			_this.setSprite(_this.nextAnim);
 			camera.shake(3);
 		});
-		break;
-	default:
-		move = false;
-	}
-	if(move){
-		this.setSprite("move");
 	}
 };
 Player.prototype.onKeyUp = function(k){
-	switch(k){
-	case 113:
-	case 81:
-	case 115:
-	case 83:
-	case 100:
-	case 68:
-	case 122:
-	case 90:
-		this.setSprite("idle");
-		break;
-	}
+	this.keyList[k] = false;
 };

@@ -15,11 +15,11 @@ Character.prototype.addPositionListener = function(listener){
 };
 
 Character.prototype.setPosition = function(x, y){
-	this.x = parseInt(x);
-	this.y = parseInt(y);
+	this.x = parseFloat(x);
+	this.y = parseFloat(y);
 
-	this.elm.css("left", x + "px");
-	this.elm.css("top", y + "px");
+	this.elm.css("left", Math.round(x) + "px");
+	this.elm.css("top", Math.round(y) + "px");
 	
 	for(var i = 0; i  < this.positionListenerList.length; i++){
 		this.positionListenerList[i](this.x, this.y);
@@ -41,9 +41,13 @@ Character.prototype.moveTo = function(x, y){
 	},
 	{
 		easing: "easeOutCirc",
-		duration: 300
+		duration: 100
 	});
 };
 Character.prototype.move = function(x, y){
-	this.moveTo(this.x + x, this.y + y);
+	if(Math.abs(x) + Math.abs(y) > 15){
+		this.moveTo(this.x + x, this.y + y);
+	}else{
+		this.setPosition(this.x + x, this.y + y);
+	}
 };
