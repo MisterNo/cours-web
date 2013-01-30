@@ -1,8 +1,11 @@
 <?php
 // Build cible
 define('BUILD_TARGET', 'dev');
-
-define('CONFIG_PATH', __DIR__.'/config/');
+define('PROJECT_PATH', preg_replace('/[\/\\\][^\/\\\]+[\/\\\]?$/', '', __DIR__).'/');
+define('VENDOR_PATH', PROJECT_PATH.'vendor/');
+define('APP_PATH', PROJECT_PATH.'app/');
+define('CONFIG_PATH', APP_PATH.'config/');
+define('TEMPLATES_PATH', APP_PATH.'templates/');
 
 // Import config commune
 $d = opendir(CONFIG_PATH);
@@ -21,3 +24,5 @@ while($f = readdir($d)){
 	}
 }
 closedir($d);
+
+coursWeb\App::init();

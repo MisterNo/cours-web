@@ -29,8 +29,8 @@ InfoPage.prototype = new Page();
 InfoPage.prototype.refreshData = function(playerData){
 	for(var i in playerData){
 		switch(i){
-		case "name":
-			this.playerName.html(playerData.name);
+		case "login":
+			this.playerName.html(playerData.login);
 			break;
 		case "title":
 			this.playerTitle.html(playerData.title);
@@ -40,7 +40,7 @@ InfoPage.prototype.refreshData = function(playerData){
 			break;
 		default:
 			if(typeof(this.attributeList[i]) != "undefined"){
-				this.attributeList[i].html(playerData[i]);
+				this.attributeList[i].html(playerData[i]).hide().show('pulsate');
 			}
 		}
 	}

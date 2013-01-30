@@ -15,20 +15,17 @@ var Game = function(){
 		console.log("New Exception : " + e);
 	}
 	
-	infoPage.refreshData({
-		name: "Johnny",
-		title: "be good",
-		xp: 200,
-		hp: 643,
-		power: 65,
-		progress: 0.8
-	});
+	infoPage.refreshData(userData);
 	scene = $("#main-scene");
 
 	$("#gui").append($("<div>").button().append("Menu").click(function(){
 		$(win.root).toggle('fade', 200);
 	}));
 	$(win.root).hide();
+
+	$("#gui").append($("<div>").button().append("Déconnexion").click(function(){
+		location.href = "?logout";
+	}));
 	
 	player = new Player(scene);
 	camera = new Camera(scene, player);

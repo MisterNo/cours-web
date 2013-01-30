@@ -109,13 +109,36 @@ Player.prototype.onKeyDown = function(k){
 		this.nextAnim = this.lastAnimId;
 		this.setSprite("attack", function(){
 			_this.setSprite(_this.nextAnim);
+			var killCount = 0;
 			for(var i = 0; i < game.mobList.length; i++){
 				var mob = game.mobList[i];
 				if(Math.abs(mob.x - _this.x) < 80 && Math.abs(mob.y - _this.y) < 20){
 					game.killMob(mob);
+					killCount++;
 				}
 			}
-//			camera.shake(3);
+			if(killCount > 0){
+				camera.shake(3);
+				$.ajax({
+					url: 'api.php',
+					type: 'POST',
+					data: {
+						action: 'mobKill',
+						killCount: killCount
+					},
+					error: function(xhr, msg){
+						alert(msg);
+					},
+					success: function(data){
+						var result = JSON.parse(data);
+						if(result.error){
+							alert(result.error);
+						}else{
+							infoPage.refreshData(result);
+						}
+					}
+				});
+			}
 		});
 	}
 };
