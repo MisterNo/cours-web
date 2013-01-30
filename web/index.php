@@ -1,5 +1,5 @@
 <?php
-include('../app/config.php');
+require_once('../app/config.php');
 
 if(isset($_SESSION['user'])){
 	coursWeb\App::handleGameForm();

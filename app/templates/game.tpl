@@ -15,11 +15,10 @@ include 'common-header.tpl';
 <script type="text/javascript" src="/cours-web-static/js/Window.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/Sprite.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/Game.js"></script>
-<script type="text/javascript" src="/cours-web-static/js/utils.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/main.js"></script>
 <script type="text/javascript">
 <?php
-echo 'var userData='.$_SESSION['user']->toJSON().';';
+echo 'var userData = '.$_SESSION['user']->toJSON().';';
 ?>
 </script>
 </head>

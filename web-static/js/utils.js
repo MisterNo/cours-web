@@ -9,6 +9,13 @@ window.requestAnimFrame = (function() {
 	         };
 })();
 
+function encrypt(){
+	var form = document.getElementById("connect-form");
+	form.password.value = Aes.Ctr.encrypt(form.password.value, '09ed931e1782289f8f9a42f837a46fa0', 256);
+	return true;
+}
+
+
 $.getTimeMillis = function(){
 	return new Date().getTime();
 };
