@@ -126,8 +126,8 @@ Player.prototype.onKeyDown = function(k){
 						action: 'mobKill',
 						killCount: killCount
 					},
-					error: function(xhr, msg){
-						alert(msg);
+					error: function(xhr, msg, msg2){
+						alert(msg2);
 					},
 					success: function(data){
 						var result = JSON.parse(data);

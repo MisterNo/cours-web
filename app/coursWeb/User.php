@@ -45,7 +45,7 @@ class User{
 	}
 	
 	public static function login($login, $password){
-		$query = App::$db->prepare('SELECT * FROM user WHERE login=? AND password=SHA1(?) LIMIT 1');
+		$query = App::$db->prepare('SELECT * FROM user WHERE login=? AND hash=SHA1(?) LIMIT 1');
 
 		if($query->execute(array($login, $password))){
 			$res = $query->fetch();
@@ -71,7 +71,7 @@ class User{
 			if($res){
 				throw new \Exception('Login already exists');
 			}else{
-				$query = App::$db->prepare('INSERT INTO user (login,password) VALUES (?,SHA1(?))');
+				$query = App::$db->prepare('INSERT INTO user (login,hash) VALUES (?,SHA1(?))');
 				if($query->execute(array($login, $password))){
 					if(!self::login($login, $password)){
 						throw new \Exception('Registration failed');
