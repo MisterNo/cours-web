@@ -66,6 +66,7 @@ class Utils{
 			}
 		}
 	}
+	
 	public static function getData(){
 		$s = AesCtr::decrypt($_REQUEST['d'], $_SESSION['key'], 256);
 		$data = json_decode($s);

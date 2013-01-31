@@ -9,6 +9,8 @@ class User{
 	private $hp = 0;
 	private $power = 0;
 	
+	public $publicData = "ok";
+	
 	private function __construct($id, $login, $xp, $hp, $power){
 		$this->id = (int)$id;
 		$this->login = $login;
@@ -24,13 +26,15 @@ class User{
 			'xp' => $this->xp,
 			'hp' => $this->hp,
 			'power' => $this->power,
+			'test' => array(0, 2),
+			'thisTest' => $this
 		));
 	}
 	
 	public function addXP($xpToAdd){
-		$query = App::$db->prepare('UPDATE user SET xp=xp+? WHERE id=?');
+		$query = App::getDB()->prepare('UPDATE user SET xp=xp+? WHERE id=?');
 		if($query->execute(array($xpToAdd, $this->id))){
-			$query = App::$db->prepare('SELECT xp FROM user WHERE id=? LIMIT 1');
+			$query = App::getDB()->prepare('SELECT xp FROM user WHERE id=? LIMIT 1');
 			if($query->execute(array($this->id))){
 				$res = $query->fetch();
 				if($res){
@@ -45,27 +49,29 @@ class User{
 	}
 	
 	public static function login($login, $password){
-		$query = App::$db->prepare('SELECT * FROM user WHERE login=? AND hash=SHA1(?) LIMIT 1');
-
-		if($query->execute(array($login, $password))){
+		$query = App::getDB()->prepare('SELECT * FROM user WHERE login=? LIMIT 1');
+		if($query->execute(array($login))){
 			$res = $query->fetch();
 			if($res){
-				$_SESSION['user'] = new User($res->id, $res->login, $res->xp, $res->hp, $res->power);
+				if(\PasswordHashUtils::validate_password($password, $res->hash)){
+					$_SESSION['user'] = new User($res->id, $res->login, $res->xp, $res->hp, $res->power);
+					return true;
+				}
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * Test
+	 * @param unknown $login
+	 * @param unknown $password
+	 */
 	public static function register($login, $password){
-		$login = trim($login);
-		$password = trim($password);
-		if(strlen($login) < 3){
-			throw new \Exception('Login too short (3 char min)');
-		}
 		if(strlen($password) < 5){
 			throw new \Exception('Password too short (3 char min)');
 		}
-		$query = App::$db->prepare('SELECT id FROM user WHERE login=? LIMIT 1');
+		$query = App::getDB()->prepare('SELECT id FROM user WHERE login=? LIMIT 1');
 		if($query->execute(array($login))){
 			$res = $query->fetch();
 			if($res){

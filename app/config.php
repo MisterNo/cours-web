@@ -24,5 +24,3 @@ while($f = readdir($d)){
 	}
 }
 closedir($d);
-
-coursWeb\App::init();
