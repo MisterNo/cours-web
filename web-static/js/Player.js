@@ -119,24 +119,8 @@ Player.prototype.onKeyDown = function(k){
 			}
 			if(killCount > 0){
 				camera.shake(3);
-				$.ajax({
-					url: 'api.php',
-					type: 'POST',
-					data: {
-						action: 'mobKill',
-						killCount: killCount
-					},
-					error: function(xhr, msg, msg2){
-						alert(msg2);
-					},
-					success: function(data){
-						var result = JSON.parse(data);
-						if(result.error){
-							alert(result.error);
-						}else{
-							infoPage.refreshData(result);
-						}
-					}
+				$.coursWeb.api('mobKill', {killCount: killCount}, function(data){
+					infoPage.refreshData(data);
 				});
 			}
 		});

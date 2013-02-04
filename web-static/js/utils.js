@@ -14,6 +14,31 @@ function encrypt(){
 	form.password.value = Aes.Ctr.encrypt(form.password.value, '09ed931e1782289f8f9a42f837a46fa0', 256);
 	return true;
 }
+$.coursWeb = {
+	api: function(action, data, callback){
+		var dataToSend = {
+			action: action,
+			data: data
+		};
+		$.ajax({
+			url: 'api.php',
+			type: 'POST',
+			data: {d: Aes.Ctr.encrypt(JSON.stringify(dataToSend), '09ed931e1782289f8f9a42f837a46fa0', 256)},
+			error: function(xhr, msg, msg2){
+				alert(msg2);
+			},
+			success: function(data){
+				var clearData = Aes.Ctr.decrypt(data, '09ed931e1782289f8f9a42f837a46fa0', 256);
+				var result = JSON.parse(clearData);
+				if(result.error){
+					alert(result.error);
+				}else if(typeof(callback) == "function"){
+					callback(result);
+				}
+			}
+		});
+	}
+};
 
 
 $.getTimeMillis = function(){
