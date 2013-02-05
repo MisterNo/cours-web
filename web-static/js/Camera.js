@@ -1,7 +1,6 @@
-var Camera = function(scene, player){
+var Camera = function(player){
 	var _this = this;
 	
-	this.scene = scene;
 	this.player = player;
 	
 	this.player.addPositionListener(function(playerX, playerY){
@@ -38,15 +37,10 @@ Camera.prototype.refreshView = function(playerX, playerY){
 	}else if(newY > Camera.MAX_Y){
 		newY = Camera.MAX_Y;
 	}
-	
-	$.ease({x: this.x, y: this.y}, {x: newX, y: newY}, function(o){
-		_this.legacyX = Math.round(o.x);
-		_this.legacyY = Math.round(o.y);
-		_this.setViewPosition(Math.round(o.x), Math.round(o.y));
-	},  {
-		duration: 200,
-		easing: "easeOutExpo"
-	});
+
+	_this.legacyX = Math.round(newX);
+	_this.legacyY = Math.round(newY);
+	_this.setViewPosition(Math.round(newX), Math.round(newY));
 };
 Camera.SHAKE_SCREEN_DURATION = 200;
 Camera.SHAKE_SCREEN_DISTANCE = 1;
@@ -65,7 +59,9 @@ Camera.prototype.shake = function(factor){
 	});
 };
 Camera.prototype.setViewPosition = function(x, y){
-	this.scene.css("top", y + "px").css("left", x + "px");
 	this.x = x;
 	this.y = y;
+};
+Camera.prototype.render = function(g){
+	g.translate(this.x, this.y);
 };

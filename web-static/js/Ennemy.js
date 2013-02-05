@@ -1,16 +1,15 @@
-var Ennemy = function(parent){
+var Ennemy = function(assetManager){
 	var _this = this;
-	Character.call(this, parent);
+	Character.call(this);
 	
 	this.centerX = 64;
 	this.centerY = 120;
 	
-	this.spriteList = {
-		"idle": new Sprite(this.elm, "mob-idle", "/cours-web-static/img/sprite/idle-1.png", 2048, 128, 16, 1, true),
-		"attack": new Sprite(this.elm, "mob-attack", "/cours-web-static/img/sprite/attack-1.png", 1536, 128, 12, 1, false),
-		"death": new Sprite(this.elm, "mob-death", "/cours-web-static/img/sprite/death-1.png", 1792, 128, 14, 1, false),
-		"damage": new Sprite(this.elm, "mob-damage", "/cours-web-static/img/sprite/damage-1.png", 1920, 128, 15, 1, false)
-	};
+	this.createSprite("idle", assetManager.getImage("mob-idle"), 2048, 128, 16, 1, true);
+	this.createSprite("attack", assetManager.getImage("mob-attack"), 1536, 128, 12, 1, false);
+	this.createSprite("death", assetManager.getImage("mob-death"), 1792, 128, 14, 1, false);
+	this.createSprite("damage", assetManager.getImage("mob-damage"), 1920, 128, 15, 1, false);
+
 	for(var i in this.spriteList){
 		this.spriteList[i].setCenter(this.centerX, this.centerY);
 	}
@@ -20,7 +19,7 @@ var Ennemy = function(parent){
 
 	var finalScale = this.scale;
 	$.ease(0, 1, function(v){
-		_this.elm.css("opacity", v);
+//		_this.elm.css("opacity", v);
 		_this.setScale(v * finalScale);
 	}, 1000);
 
@@ -46,23 +45,5 @@ Ennemy.prototype.setScale = function(scale){
 	this.scale = scale;
 	for(var i in this.spriteList){
 		this.spriteList[i].setScale(this.scale);
-	}
-};
-Ennemy.prototype.setSprite = function(anim, onComplete){
-	this.lastAnimId = anim;
-	var spriteId = anim;
-	if(this.currentSprite != this.spriteList[spriteId]){
-		if(!this.currentSprite || this.currentSprite.loop || this.currentSprite.currentFrame == this.currentSprite.frameCount - 1){
-			if(this.currentSprite){
-				this.currentSprite.stop();
-				this.currentSprite.hide();
-			}
-			this.currentSprite = this.spriteList[spriteId];
-			this.currentSprite.resetAnim();
-			this.currentSprite.play(onComplete);
-			this.currentSprite.show();
-		}else{
-			this.nextSprite = anim;
-		}
 	}
 };
