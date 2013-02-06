@@ -1,6 +1,6 @@
 var Game = function(){
 	var _this = this;
-	var sleep = 5;
+	var sleep = 1;
 	this.imageList = {
 		"background": "http://localhost/cours-web-static/img/getImage.php?url=forest.jpg&sleep=" + sleep,
 		"player-idle": "/cours-web-static/img/getImage.php?url=sprite/idle-1-2-1.png&sleep=" + sleep,
@@ -36,12 +36,18 @@ var Game = function(){
 	this.assetManager = new AssetManager();
 	this.assetManager.startLoading(this.imageList, this.soundList);
 
-	$("#gui").append($("<div>").button().append("Menu").click(function(){
-		$(win.root).toggle('fade', 200);
+	var menuBar = $("<div>").attr("id", "menu-bar");
+	menuBar.append(menuBar);
+	$("#gui").append(menuBar);
+	menuBar.append($("<div>").button().append("Menu").click(function(){
+		if($(win.root).hasClass("visible")){
+			$(win.root).removeClass("visible");
+		}else{
+			$(win.root).addClass("visible");
+		}
 	}));
-	$(win.root).hide();
 
-	$("#gui").append($("<div>").button().append("Déconnexion").click(function(){
+	menuBar.append($("<div>").button().append("Déconnexion").click(function(){
 		location.href = "?logout";
 	}));
 	

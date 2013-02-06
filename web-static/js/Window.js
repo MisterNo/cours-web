@@ -30,7 +30,7 @@ Window.prototype.addPage = function(title, page){
 	page.root.style.display = "none";
 	
 	var menuElm = document.createElement("li");
-	menuElm.innerHTML = title;
+	menuElm.innerHTML = '<div>' + title + '</div>';
 	menuElm.page = page;
 	
 	menuElm.addEventListener("click", function(){

@@ -12,10 +12,23 @@
 	color: #caffff;
 	font-family: gunship;
 	font-size: 26px;
-	text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
-		3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff;
 	text-align: center;
 	margin: 5px;
+	-webkit-animation: halo 1s infinite;
+}
+@-webkit-keyframes halo{
+	from {
+		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+			3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff;
+	}
+	50% {
+		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+			3px 3px 17px #caffff, -3px -3px 17px #caffff, -3px 3px 17px #caffff, 3px -3px 17px #caffff;
+	}
+	to {
+		text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black,
+			3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff;
+	}
 }
 .player-title{
 	color: yellow;
