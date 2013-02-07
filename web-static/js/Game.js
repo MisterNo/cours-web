@@ -21,9 +21,10 @@ var Game = function(){
 	var win = new Window('main-window', document.getElementById("gui"));
 	
 	infoPage = new InfoPage();
+	
 	try{
 		win.addPage("info", infoPage);
-		win.addPage("description", new Page("<strong>hello</strong> world"));
+		win.addPage("chat", new ChatPage());
 		win.addPage("equipement", new Page("lorem ipsum"));
 	}catch(e){
 		console.log("New Exception : " + e);

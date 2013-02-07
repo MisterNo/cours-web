@@ -16,6 +16,8 @@ include 'common-header.tpl';
 <script type="text/javascript" src="/cours-web-static/js/Sprite.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/Game.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/AssetManager.js"></script>
+<script type="text/javascript" src="/cours-web-static/js/Client.js"></script>
+<script type="text/javascript" src="/cours-web-static/js/ChatPage.js"></script>
 <script type="text/javascript" src="/cours-web-static/js/main.js"></script>
 <script type="text/javascript">
 <?php
