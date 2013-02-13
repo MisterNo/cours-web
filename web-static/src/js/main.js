@@ -1,4 +1,6 @@
 var game;
-function start(){
-	game = new Game();
-}
+$(document).ready(function(){
+	if(typeof(userData) != "undefined"){
+		game = new Game();
+	}
+});

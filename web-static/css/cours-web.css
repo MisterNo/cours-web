@@ -1,0 +1,256 @@
+@font-face {
+  font-family: gunship-condensed;
+  src: url(../font/gun4fc.ttf); }
+
+@font-face {
+  font-family: gunship;
+  src: url(../font/gun4f.ttf); }
+
+@font-face {
+  font-family: gunship-italic;
+  src: url(../font/gun4fi.ttf); }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: black; }
+
+#screen {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  width: 1024px;
+  height: 600px;
+  overflow: hidden;
+  /* 	background: white; */
+  /* 	top: 50%; */
+  /* 	left: 50%; */
+  /* 	margin-left: -512px; */
+  /* 	margin-top: -300px; */
+  font-family: gunship-condensed;
+  font-size: 9px; }
+
+.window {
+  position: absolute;
+  height: 350px;
+  background: rgba(100, 100, 255, 0.8);
+  top: 5px;
+  left: -200px;
+  border: white solid 2px;
+  visibility: hidden;
+  z-index: -1;
+  opacity: 0;
+  -webkit-transition: all 0.5s cubic-bezier(0, 0, 0.2, 1);
+  -webkit-transform: skewX(90deg) scale(0.1, 0.1);
+  -webkit-transform-origin: top left; }
+
+.window.visible {
+  visibility: visible;
+  z-index: 100;
+  opacity: 1;
+  left: 40px;
+  -webkit-transform: none; }
+
+.window .menu {
+  height: 100%;
+  width: 160px;
+  float: left;
+  border-right: #caffff solid 2px;
+  font-size: 14px; }
+
+.menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+
+.menu li {
+  background-image: url(../img/images/goal.png);
+  background-repeat: no-repeat;
+  background-color: rgba(74, 74, 139, 0.75);
+  background-position: left center;
+  padding: 5px;
+  padding-left: 27px;
+  padding-top: 7px;
+  border: 2px outset;
+  cursor: pointer;
+  color: #caffff;
+  line-height: 28px; }
+
+.menu li div {
+  -webkit-transition: all 0.5s ease-out;
+  pointer-events: none; }
+
+.menu li:hover {
+  background-color: rgba(187, 187, 209, 0.76); }
+
+.menu li:active div {
+  -webkit-transform: rotate3d(1, 0, 0, 360deg); }
+
+.menu li:active {
+  background-image: url(../img/images/goal-done.png);
+  border-style: inset;
+  background-color: rgba(0, 0, 0, 0.3); }
+
+.menu li.selected {
+  background-image: url(../img/images/goal-done.png);
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: default;
+  border-style: inset; }
+
+.window .content {
+  float: left;
+  height: 100%;
+  width: 400px;
+  position: relative;
+  background: rgba(0, 0, 0, 0.5); }
+
+.window .content > div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+
+dl {
+  margin: 10px; }
+
+dl > * {
+  margin: 2px 0px;
+  font-size: 12px;
+  line-height: 17px; }
+
+dt {
+  float: left;
+  clear: both;
+  width: 90px;
+  color: #caffff; }
+
+dt:after {
+  content: " :"; }
+
+dd {
+  float: left; }
+
+#menu-bar {
+  -webkit-transform-origin: top right;
+  -webkit-transform: translateX(-100%) rotate(-90deg);
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  overflow: visible; }
+
+#menu-bar .ui-button {
+  -webkit-transition: -webkit-transform 0.5s cubic-bezier(0, 0, 0.2, 1); }
+
+#menu-bar .ui-button:hover {
+  -webkit-transform: scale(1.2); }
+
+.player-preview {
+  width: 256px;
+  height: 256px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -128px;
+  margin-top: -128px;
+  background-image: url(../img/selection-1-2-1.png); }
+
+.player-name {
+  color: #caffff;
+  font-family: gunship;
+  font-size: 26px;
+  text-align: center;
+  margin: 5px;
+  -webkit-animation: halo 1s infinite; }
+
+@-webkit-keyframes halo {
+  from {
+    text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff; }
+
+  50% {
+    text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 3px 3px 17px #caffff, -3px -3px 17px #caffff, -3px 3px 17px #caffff, 3px -3px 17px #caffff; }
+
+  to {
+    text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black, 3px 3px 7px #caffff, -3px -3px 7px #caffff, -3px 3px 7px #caffff, 3px -3px 7px #caffff; } }
+
+.player-title {
+  color: yellow;
+  font-family: gunship-italic;
+  font-size: 16px;
+  text-shadow: 2px 2px 0 black, -2px -2px 0 black, -2px 2px 0 black, 2px -2px 0 black;
+  text-align: center;
+  margin: 5px; }
+
+.player-progress {
+  width: 70px;
+  height: 14px;
+  background-image: url(../img/images/icon-star-off.png);
+  background-position: left center;
+  text-align: center;
+  margin: auto; }
+
+.player-progress-indic {
+  width: 40%;
+  height: 100%;
+  background-image: url(../img/images/icon-star-on.png);
+  background-position: left center; }
+
+.xp {
+  background-image: url(../img/images/icon-xp-small.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 16px;
+  line-height: 17px;
+  color: skyblue;
+  text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black; }
+
+.hp {
+  background-image: url(../img/images/heart.png);
+  background-repeat: no-repeat;
+  background-position: right center;
+  padding-right: 18px;
+  color: red;
+  text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black; }
+
+.power {
+  color: yellow;
+  text-shadow: 1px 1px 0 black, -1px -1px 0 black, -1px 1px 0 black, 1px -1px 0 black; }
+
+dl {
+  position: absolute;
+  bottom: 0px;
+  left: 10px; }
+
+.scene-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; }
+
+.scene {
+  position: absolute;
+  width: 4096px;
+  height: 2037px;
+  background-image: url(../img/forest.jpg);
+  background-position: bottom right; }
+
+.character {
+  position: absolute; }
+
+.character.kankrelat {
+  background-image: url(../img/idle-1.png);
+  width: 128px;
+  height: 128px;
+  top: 1770px;
+  left: 3900px; }
+
+.character.samurai {
+  background-image: url(../img/idle-1-2-1.png);
+  width: 128px;
+  height: 128px;
+  top: 1770px;
+  left: 3530px; }

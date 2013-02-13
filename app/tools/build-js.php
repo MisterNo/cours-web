@@ -9,12 +9,19 @@ function concat($dir, $output){
 function recursiveConcat($dir, $output){
 	$d = opendir($dir);
 	echo 'Browsing folder '.$dir.NL;
+	$list = array();
 	while($f = readdir($d)){
-		if(is_dir($dir.$f) && $f != '.' && $f != '..'){
-			recursiveConcat($dir.$f.'/', $output);
-		}else if(is_file($dir.$f)){
+		if($f != '.' && $f != '..'){
+			$list[] = $dir.$f;
+		}
+	}
+	sort($list);
+	foreach($list as $f){
+		if(is_dir($f)){
+			recursiveConcat($f.'/', $output);
+		}else{
 			echo 'Processing '.$f.NL;
-			fwrite($output, file_get_contents($dir.$f));
+			fwrite($output, file_get_contents($f));
 		}
 	}
 	closedir($d);

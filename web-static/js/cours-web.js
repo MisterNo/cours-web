@@ -1,4 +1,100 @@
-var AssetManager = function(){
+var Page = function(content){
+	this.root = document.createElement("div");
+	this.root.innerHTML = content;
+	
+	this.jRoot = $(this.root);
+};
+Page.prototype.append = function(content){
+	if(typeof content == "string"){
+		this.root.innerHTML += content;
+	}else{
+		this.root.appendChild(content.get(0));
+	}
+};
+Page.prototype.setVisible = function(visible){
+	//this.root.style.display = visible?"block":"none";
+	if(visible){
+		this.jRoot.show('fade');
+	}else{
+		this.jRoot.hide('fade');
+	}
+};var ChatPage = function(){
+	var _this = this;
+	Page.call(this, "");
+	
+	this.client = new Client("localhost", 1234, function(message){
+		_this.result.append("<div>" + message + "</div>");
+	});
+	this.input = $("<input/>").attr("type", "text");
+	this.append(this.input);
+	
+	this.sendButton = $("<span/>").html("Envoyer").button();
+	this.sendButton.click(function(){
+		_this.client.send(userData.login + " : " + _this.input.get(0).value);
+		_this.input.get(0).value = "";
+	});
+	this.append(this.sendButton);
+
+	this.result = $("<div>").addClass("chat-box");
+	this.append(this.result);
+};
+ChatPage.prototype = new Page();
+
+var InfoPage = function(){
+	Page.call(this, "");
+	
+	this.playerPreview = $("<div/>").addClass("player-preview");
+	this.append(this.playerPreview);
+
+	this.playerName = $("<div>").addClass("player-name").append("nom");
+	this.append(this.playerName);
+	
+	this.playerTitle = $("<div>").addClass("player-title").append("title");
+	this.append(this.playerTitle);
+
+	this.playerProgress = $('<div class="player-progress"/>');
+	this.playerProgressIndic = $('<div class="player-progress-indic"/>');
+	this.playerProgress.append(this.playerProgressIndic);
+	this.append(this.playerProgress);
+	
+	this.attributeContainer = $("<dl>");
+	this.append(this.attributeContainer);
+
+	this.attributeList = {};
+	this.addAttribute("xp", "XP");
+	this.addAttribute("hp", "HP");
+	this.addAttribute("power", "Puissance");
+};
+InfoPage.prototype = new Page();
+
+InfoPage.prototype.refreshData = function(playerData){
+	for(var i in playerData){
+		switch(i){
+		case "login":
+			this.playerName.html(playerData.login);
+			break;
+		case "title":
+			this.playerTitle.html(playerData.title);
+			break;
+		case "progress":
+			this.playerProgressIndic.css("width", Math.round(playerData.progress * 100) + '%');
+			break;
+		default:
+			if(typeof(this.attributeList[i]) != "undefined"){
+				this.attributeList[i].html(playerData[i]).hide().show('pulsate');
+			}
+		}
+	}
+};
+InfoPage.prototype.addAttribute = function(id, label){
+	var dt = $("<dt>").append(label);
+	this.attributeContainer.append(dt);
+	
+	var dd = $("<dd>").addClass(id);
+	this.attributeContainer.append(dd);
+	
+	this.attributeList[id] = dd;
+};var AssetManager = function(){
 	this.images = {};
 	this.sounds = {};
 	this.imagesError = {};
@@ -303,28 +399,7 @@ Character.prototype.move = function(x, y){
 //	}else{
 		this.setPosition(this.x + x, this.y + y);
 //	}
-};var ChatPage = function(){
-	var _this = this;
-	Page.call(this, "");
-	
-	this.client = new Client("localhost", 1234, function(message){
-		_this.result.append("<div>" + message + "</div>");
-	});
-	this.input = $("<input/>").attr("type", "text");
-	this.append(this.input);
-	
-	this.sendButton = $("<span/>").html("Envoyer").button();
-	this.sendButton.click(function(){
-		_this.client.send(userData.login + " : " + _this.input.get(0).value);
-		_this.input.get(0).value = "";
-	});
-	this.append(this.sendButton);
-
-	this.result = $("<div>").addClass("chat-box");
-	this.append(this.result);
-};
-ChatPage.prototype = new Page();
-var Client = function(host, port, handler){
+};var Client = function(host, port, handler){
 	this.connection = new WebSocket('ws://localhost:1234');
 	this.connection.onmessage = function(data){
 		console.log("Message received");
@@ -506,84 +581,6 @@ Game.prototype.mainLoop = function(){
 		this.graphics.globalAlpha = 1;
 	}
 
-};
-var InfoPage = function(){
-	Page.call(this, "");
-	
-	this.playerPreview = $("<div/>").addClass("player-preview");
-	this.append(this.playerPreview);
-
-	this.playerName = $("<div>").addClass("player-name").append("nom");
-	this.append(this.playerName);
-	
-	this.playerTitle = $("<div>").addClass("player-title").append("title");
-	this.append(this.playerTitle);
-
-	this.playerProgress = $('<div class="player-progress"/>');
-	this.playerProgressIndic = $('<div class="player-progress-indic"/>');
-	this.playerProgress.append(this.playerProgressIndic);
-	this.append(this.playerProgress);
-	
-	this.attributeContainer = $("<dl>");
-	this.append(this.attributeContainer);
-
-	this.attributeList = {};
-	this.addAttribute("xp", "XP");
-	this.addAttribute("hp", "HP");
-	this.addAttribute("power", "Puissance");
-};
-InfoPage.prototype = new Page();
-
-InfoPage.prototype.refreshData = function(playerData){
-	for(var i in playerData){
-		switch(i){
-		case "login":
-			this.playerName.html(playerData.login);
-			break;
-		case "title":
-			this.playerTitle.html(playerData.title);
-			break;
-		case "progress":
-			this.playerProgressIndic.css("width", Math.round(playerData.progress * 100) + '%');
-			break;
-		default:
-			if(typeof(this.attributeList[i]) != "undefined"){
-				this.attributeList[i].html(playerData[i]).hide().show('pulsate');
-			}
-		}
-	}
-};
-InfoPage.prototype.addAttribute = function(id, label){
-	var dt = $("<dt>").append(label);
-	this.attributeContainer.append(dt);
-	
-	var dd = $("<dd>").addClass(id);
-	this.attributeContainer.append(dd);
-	
-	this.attributeList[id] = dd;
-};var game;
-function start(){
-	game = new Game();
-}var Page = function(content){
-	this.root = document.createElement("div");
-	this.root.innerHTML = content;
-	
-	this.jRoot = $(this.root);
-};
-Page.prototype.append = function(content){
-	if(typeof content == "string"){
-		this.root.innerHTML += content;
-	}else{
-		this.root.appendChild(content.get(0));
-	}
-};
-Page.prototype.setVisible = function(visible){
-	//this.root.style.display = visible?"block":"none";
-	if(visible){
-		this.jRoot.show('fade');
-	}else{
-		this.jRoot.hide('fade');
-	}
 };var Player = function(assetManager){
 	var _this = this;
 	Character.call(this);
@@ -832,7 +829,65 @@ Sprite.prototype.setScale = function(scale){
 //		this.img.height(Math.round(this.height * this.scale * this.rowCount));
 		this.refreshPosition();
 	}
-};window.requestAnimFrame = (function() {
+};var Window = function(id, parent){
+	this.id = id;
+	this.parent = parent;
+	
+	this.root = document.createElement("div");
+	this.root.className = "window";
+	this.parent.appendChild(this.root);
+	
+	this.menu = document.createElement("div");
+	this.menu.className = "menu";
+	this.root.appendChild(this.menu);
+	
+	this.menuList = document.createElement("ul");
+	this.menuList.setAttribute("id", "main-menu");
+	this.menu.appendChild(this.menuList);
+	
+	this.content = document.createElement("div");
+	this.content.className = "content";
+	this.root.appendChild(this.content);
+	
+	this.currentPage = null;
+};
+Window.prototype.addPage = function(title, page){
+	if(!(page instanceof Page)){
+		throw page + " is not instanceof Page";
+	}
+	var _this = this;
+	this.content.appendChild(page.root);
+	
+	page.root.style.display = "none";
+	
+	var menuElm = document.createElement("li");
+	menuElm.innerHTML = '<div>' + title + '</div>';
+	menuElm.page = page;
+	
+	menuElm.addEventListener("click", function(){
+		_this.showPage(menuElm);
+	});
+	this.menuList.appendChild(menuElm);
+	
+	if(this.currentPage == null){
+		this.showPage(menuElm);
+	}
+};
+
+Window.prototype.showPage = function(elm){
+	if(this.currentPage != null){
+		this.currentPage.page.setVisible(false);
+		this.currentPage.className = "";
+	}
+	this.currentPage = elm;
+	this.currentPage.page.setVisible(true);
+	this.currentPage.className = "selected";
+};var game;
+$(document).ready(function(){
+	if(typeof(userData) != "undefined"){
+		game = new Game();
+	}
+});window.requestAnimFrame = (function() {
 	  return window.requestAnimationFrame ||
 	         window.webkitRequestAnimationFrame ||
 	         window.mozRequestAnimationFrame ||
@@ -1406,57 +1461,4 @@ Utf8.decode = function(strUtf) {
   return strUni;
 };
 
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */var Window = function(id, parent){
-	this.id = id;
-	this.parent = parent;
-	
-	this.root = document.createElement("div");
-	this.root.className = "window";
-	this.parent.appendChild(this.root);
-	
-	this.menu = document.createElement("div");
-	this.menu.className = "menu";
-	this.root.appendChild(this.menu);
-	
-	this.menuList = document.createElement("ul");
-	this.menuList.setAttribute("id", "main-menu");
-	this.menu.appendChild(this.menuList);
-	
-	this.content = document.createElement("div");
-	this.content.className = "content";
-	this.root.appendChild(this.content);
-	
-	this.currentPage = null;
-};
-Window.prototype.addPage = function(title, page){
-	if(!(page instanceof Page)){
-		throw page + " is not instanceof Page";
-	}
-	var _this = this;
-	this.content.appendChild(page.root);
-	
-	page.root.style.display = "none";
-	
-	var menuElm = document.createElement("li");
-	menuElm.innerHTML = '<div>' + title + '</div>';
-	menuElm.page = page;
-	
-	menuElm.addEventListener("click", function(){
-		_this.showPage(menuElm);
-	});
-	this.menuList.appendChild(menuElm);
-	
-	if(this.currentPage == null){
-		this.showPage(menuElm);
-	}
-};
-
-Window.prototype.showPage = function(elm){
-	if(this.currentPage != null){
-		this.currentPage.page.setVisible(false);
-		this.currentPage.className = "";
-	}
-	this.currentPage = elm;
-	this.currentPage.page.setVisible(true);
-	this.currentPage.className = "selected";
-};
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  */
