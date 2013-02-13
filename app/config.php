@@ -6,6 +6,7 @@ define('VENDOR_PATH', PROJECT_PATH.'vendor/');
 define('APP_PATH', PROJECT_PATH.'app/');
 define('CONFIG_PATH', APP_PATH.'config/');
 define('TEMPLATES_PATH', APP_PATH.'templates/');
+define('STATIC_PATH', PROJECT_PATH.'web-static/');
 
 // Import config commune
 $d = opendir(CONFIG_PATH);
