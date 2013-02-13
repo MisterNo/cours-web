@@ -2,7 +2,7 @@ var Game = function(){
 	var _this = this;
 	var sleep = 1;
 	this.imageList = {
-		"background": "http://localhost/cours-web-static/img/getImage.php?url=forest.jpg&sleep=" + sleep,
+		"background": "/cours-web-static/img/getImage.php?url=forest.jpg&sleep=" + sleep,
 		"player-idle": "/cours-web-static/img/getImage.php?url=sprite/idle-1-2-1.png&sleep=" + sleep,
 		"player-attack": "/cours-web-static/img/getImage.php?url=sprite/attack-1-2-1.png&sleep=" + sleep,
 		"player-move": "/cours-web-static/img/getImage.php?url=sprite/move-1-2-1.png&sleep=" + sleep,
