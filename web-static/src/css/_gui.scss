@@ -1,3 +1,5 @@
+$ease-out: cubic-bezier(0,0,0.2,1);
+
 .window{
 	position: absolute;
 	height: 350px;
@@ -8,9 +10,9 @@
 	visibility: hidden;
 	z-index: -1;
 	opacity: 0;
-	-webkit-transition: all 0.5s cubic-bezier(0,0,0.2,1);
-	-webkit-transform: skewX(90deg) scale(0.1, 0.1);
-	-webkit-transform-origin: top left;
+	-webkit-transition: all 0.5s $ease-out;
+	@include transform(skewX(90deg) scale(0.1, 0.1));
+	@include transform-origin(top left);
 }
 .window.visible{
 	visibility: visible;
@@ -43,27 +45,29 @@
 	cursor: pointer;
 	color: #caffff;
 	line-height: 28px;
-}
-.menu li div{
-	-webkit-transition: all 0.5s ease-out;
-	pointer-events: none;
-}
-.menu li:hover{
-	background-color: rgba(187, 187, 209, 0.76);
-}
-.menu li:active div{
-	-webkit-transform: rotate3d(1, 0, 0, 360deg);
-}
-.menu li:active{
-	background-image: url(../img/images/goal-done.png);
-	border-style: inset;
-	background-color: rgba(0, 0, 0, 0.3);
-}
-.menu li.selected{
-	background-image: url(../img/images/goal-done.png);
-	background-color: rgba(0, 0, 0, 0.5);
-	cursor: default;
-	border-style: inset;
+	
+	&:hover{
+		background-color: rgba(187, 187, 209, 0.76);
+	}
+	&:active{
+		background-image: url(../img/images/goal-done.png);
+		border-style: inset;
+		background-color: rgba(0, 0, 0, 0.3);
+		
+		div{
+			-webkit-transform: rotate3d(1, 0, 0, 360deg);
+		}
+	}
+	div{
+		-webkit-transition: all 0.5s ease-out;
+		pointer-events: none;
+	}
+	&.selected{
+		background-image: url(../img/images/goal-done.png);
+		background-color: rgba(0, 0, 0, 0.5);
+		cursor: default;
+		border-style: inset;
+	}
 }
 .window .content{
 	float: left;
@@ -110,7 +114,7 @@ dd{
 	overflow: visible;
 }
 #menu-bar .ui-button{
-	-webkit-transition: -webkit-transform 0.5s cubic-bezier(0,0,0.2,1);
+	-webkit-transition: -webkit-transform 0.5s $ease-out;
 }
 #menu-bar .ui-button:hover{
 	-webkit-transform: scale(1.2);
