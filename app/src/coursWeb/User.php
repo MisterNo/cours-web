@@ -48,6 +48,16 @@ class User{
 		return $this->xp;
 	}
 	
+	public static function fbLogin($fbId){
+		$query = App::getDB()->prepare('SELECT * FROM user WHERE socialId=? LIMIT 1');
+		if($query->execute(array($fbId))){
+			$res = $query->fetch();
+			if($res){
+				
+			}
+		}
+	}
+	
 	public static function login($login, $password){
 		$query = App::getDB()->prepare('SELECT * FROM user WHERE login=? LIMIT 1');
 		if($query->execute(array($login))){

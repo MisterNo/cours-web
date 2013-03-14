@@ -1,10 +1,24 @@
 <?php
 namespace coursWeb;
 
+use Facebook;
+
 class App{
 	
 	private static $db = false;
+	
+	private static $fbApi = false;
 
+	public static function getFbApi(){
+		if(!self::$fbApi && defined('FB_APP_ID') && defined('FB_APP_SECRET')){
+			self::$fbApi = new Facebook(array(
+				'appId'  => FB_APP_ID,
+				'secret' => FB_APP_SECRET,
+			));
+		}
+		return self::$fbApi;
+	}
+	
 	public static function getDB(){	
 		if(self::$db === false){
 			self::$db = new \PDO(DB_DRIVER.':host='.DB_HOST.';dbname='.DB_NAME, DB_USER, DB_PASS);
@@ -23,7 +37,19 @@ class App{
 	}
 	public static function handleConnectForm(){
 		$db = self::getDB();
-		if(isset($_POST['action-login']) || isset($_POST['action-register'])){
+		$fbApi = self::getFbApi();
+		if($fbApi){
+			$userFbId = $fbApi->getUser();
+			print_r($userFbId);
+			if(!$userFbId){
+				die('<script>top.location.href="http://www.facebook.com/dialog/oauth?client_id='.$fbApi->getAppId().'&scope='.FB_APP_SCOPE.'&redirect_uri='.urlencode(WEB_URI).'"</script>');
+			}else{
+				User::fbLogin($userFbId);
+// 				Utils::debug($fbApi->getSignedRequest(), 'SignedRequest');
+// 				Utils::debug($fbApi->api('/me'), '/me');
+// 				die();
+			}
+		}else if(isset($_POST['action-login']) || isset($_POST['action-register'])){
 			if(!isset($_POST['login'])){
 				trigger_error('Missing login');
 			}else if(!isset($_POST['password'])){
